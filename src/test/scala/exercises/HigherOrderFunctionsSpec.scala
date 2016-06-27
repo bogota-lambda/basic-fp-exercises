@@ -14,4 +14,14 @@ class HigherOrderFunctionsSpec extends FlatSpec with Matchers {
     findFirst(Array("hola","casa","sol"), "casa") should equal (1)
     findFirst(Array("hola","casa","sol"), "carro") should equal (-1)
   }
+
+  it should "identify if an array is sorted" in {
+    isSorted(Array(1,2,3), (x:Int, y: Int) => x<=y) should equal(true)
+    isSorted(Array(1,2), (x:Int, y: Int) => x<=y) should equal(true)
+    isSorted(Array(1), (x:Int, y: Int) => x<=y) should equal(true)
+    isSorted(Array(1,-1), (x:Int, y: Int) => x<=y) should equal(false)
+    isSorted(Array(-1,0,1), (x:Int, y: Int) => x<=y) should equal(true)
+    isSorted(Array[Int](), (x:Int, y: Int) => x<=y) should equal(true)
+    isSorted(Array(1,2,3,4,3,5,6,7), (x:Int, y: Int) => x<=y) should equal(false)
+  }
 }

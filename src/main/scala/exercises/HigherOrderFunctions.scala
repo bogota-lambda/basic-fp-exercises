@@ -65,9 +65,4 @@ object HigherOrderFunctions {
     loop(0)
   }
 
-  def main(args: Array[String]): Unit = {
-    println(formatAbs(-42))
-    println(formatFact(7))
-  }
-
 }
