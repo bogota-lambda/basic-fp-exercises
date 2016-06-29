@@ -2,7 +2,6 @@
 .ensime_cache
 .idea
 .idea_modules
-build.sbt
 project/project
 project/target
 target
