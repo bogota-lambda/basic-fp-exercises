@@ -56,7 +56,7 @@ object HigherOrderFunctions {
   def isSorted[A](array: Array[A], ordered: (A,A) => Boolean ): Boolean = {
     @annotation.tailrec
     def loop(n: Int): Boolean =
-      if(n >= array.length || n == array.length - 1)
+      if(n >= array.length - 1)
         true
       else if(!ordered(array(n), array(n+1)))
         false
