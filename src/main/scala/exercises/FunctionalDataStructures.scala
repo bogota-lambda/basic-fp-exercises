@@ -1,6 +1,24 @@
 package exercises
 
-sealed trait List[+A]
+sealed trait List[+A] {
+
+  def map[B](f: A => B): List[B] = this match {
+    case Nil        => Nil
+    case Cons(x,xs) => Cons(f(x), xs.map(f))
+  }
+
+  // exercise
+  def filter(f: A => Boolean): List[A] = this match {
+    case Nil        => Nil
+    case Cons(x,xs) => if(f(x)) Cons(x, xs.filter(f)) else xs.filter(f)
+  }
+
+  def foldRight[B](z: B, f: (A,B) => B): B = this match {
+    case Nil        => z
+    case Cons(x,xs) => f(x, xs.foldRight(z, f))
+  }
+
+}
 case object Nil                             extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
@@ -17,73 +35,27 @@ object List {
     case Cons(x,xs) => x * product(xs)
   }
 
-  // exercise 
-  def drop[A](list: List[A], n: Int): List[A] =
-    if(n <= 0) {
-      list
-    } else {
-      list match {
-        case Nil        => Nil
-        case Cons(x,xs) => drop(xs, n-1)
-      }
-    }
-
-  // exercise
-  def dropWhile[A](list: List[A])( p: A => Boolean): List[A] = list match {
-    case Nil => Nil
-    case Cons(x,xs) =>
-      if(p(x))
-        dropWhile(xs)(p)
-      else
-        list
+  def all(list: List[Boolean]): Boolean = list match {
+    case Nil        => true
+    case Cons(x,xs) => x && all(xs)
   }
 
-  def foldRight[A,B](list: List[A], z: B)(f: (A,B) => B): B = list match {
-    case Nil        => z
-    case Cons(x,xs) => f( x, foldRight(xs,z)(f) )
+  def totalLength(list: List[String]): Int = list match {
+    case Nil        => 0
+    case Cons(x,xs) => x.length + totalLength(xs)
   }
 
-  def sum2(list: List[Int]): Int = foldRight(list, 0)(_ + _)
+  def sum2(list: List[Int]): Int =
+    list.foldRight[Int](0, (a,b) => a + b )
 
-  def product2(list: List[Int]): Int = foldRight(list, 1)(_ * _)
+  def product2(list: List[Int]): Int =
+    list.foldRight[Int](1, (a,b) => a * b )
 
-  // exercise
-  def length[A](list: List[A]): Int = foldRight(list,0)( (_,acc) => acc+1 )
+  def all2(list: List[Boolean]): Boolean =
+    list.foldRight[Boolean](true, (a,b) => a && b )
 
-  // exercise
-  def foldLeft[A,B](list: List[A], z: B)(f: (B,A) => B): B = {
-    @annotation.tailrec
-    def loop(list: List[A], acc: B): B = list match {
-      case Nil         => acc
-      case Cons(x, xs) => loop(xs, f(acc,x))
-    }
-    loop(list, z)
-  }
-
-  // exercise
-  def reverse[A](list: List[A]): List[A] =
-    foldLeft(list, List[A]())( (tail, x) => Cons(x,tail) )
-
-  // exercise
-  def addOne2All(list: List[Int]): List[Int] = list match {
-    case Nil        => Nil
-    case Cons(x,xs) => Cons(x+1, addOne2All(xs))
-  }
-
-  // exercise
-  def allDoubles2Strings(list: List[Double]): List[String] = list match {
-    case Nil        => Nil
-    case Cons(x,xs) => Cons(x.toString, allDoubles2Strings(xs))
-  }
-
-  // exercise
-  def map[A,B](list: List[A])(f: A => B): List[B] = list match {
-    case Nil        => Nil
-    case Cons(x,xs) => Cons(f(x), map(list)(f))
-  }
-
-  // exercise
-  def filter[A](list: List[A])(f: A => Boolean): List[A] = foldRight(list, empty[A])( (x,xs) => if(f(x)) Cons(x,xs) else xs )
+  def totalLength2(list: List[String]): Int =
+    list.foldRight[Int](0, (str,acc) => str.length + acc)
 
   // Constructor varíadico
   def apply[A](as: A*): List[A] =
