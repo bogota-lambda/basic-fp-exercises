@@ -18,4 +18,9 @@ class ListSpec extends FlatSpec with Matchers {
     List(1).filter( _%2 == 0 ) should equal ( List() )
   }
 
+  it should "sum elements in a list" in {
+    List.sum2( List(4,10,2) ) should equal (16)
+    List.sum2( List() ) should equal (0)
+  }
+
 }

@@ -27,7 +27,7 @@ object HigherOrderFunctions {
 
   def formatAbs2(x: Int): String = formatResult("absolute value", x, abs)
 
-  def formatFact2(x: Int): String = formatResult("factorial", x, fact)
+  def formatFact2(x: Int): String = formatResult("factorial", x, x => fact(x).toInt)
 
   def findFirst(strings: Array[String], key: String): Int = {
     @annotation.tailrec
@@ -54,15 +54,7 @@ object HigherOrderFunctions {
   }
 
   def isSorted[A](array: Array[A], ordered: (A,A) => Boolean ): Boolean = {
-    @annotation.tailrec
-    def loop(n: Int): Boolean =
-      if(n >= array.length - 1)
-        true
-      else if(!ordered(array(n), array(n+1)))
-        false
-      else
-        loop(n+1)
-    loop(0)
+    ???
   }
 
 }
